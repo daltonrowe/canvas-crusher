@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas Crusher</title>
+    <link rel="stylesheet" href="index.css" />
+    <script src="lib.js" type="module"></script>
+    <script src="index.js" type="module" defer></script>
+  </head>
+  <body>
+    <div id="wrap">
+      <canvas id="canvas"></canvas>
+    </div>
+    <div id="options">
+      <input type="file" id="file" />
+      <select id="algo">
+        <option value="none">none</option>
+        <option value="grayscale">grayscale</option>
+        <option value="threshold">threshold</option>
+        <option value="floydsteinberg">floydsteinberg</option>
+        <option value="bayer" selected>bayer</option>
+        <option value="atkinson">atkinson</option>
+      </select>
+      <input type="range" id="range" min="0" max="255" step="1" />
+    </div>
+  </body>
+</html>
