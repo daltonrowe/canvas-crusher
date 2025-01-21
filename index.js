@@ -12,11 +12,16 @@ const options = document.querySelector('#options');
 const range = document.querySelector('#range');
 const select = document.querySelector('#algo');
 const strip = document.querySelector('#strip');
+
+const black = document.querySelector('#color-black');
+const white = document.querySelector('#color-white');
+const resetColor = document.querySelector('#color-reset');
+
 const download = document.querySelector('#download');
 
 const hasThreshold = ['threshold', 'bayer']
 
-const target = { image: null, algo: 'bayer', threshold: 128, strip: 'none' }
+const target = { image: null, algo: 'bayer', threshold: 128, strip: 'none', white: null, black: null }
 
 const state = new Proxy(target, {
   async set(target, prop, receiver) {
@@ -43,12 +48,32 @@ function render() {
 }
 
 function stripPixels(data) {
+  if (state.strip !== 'none' && (!state.white || !state.black)) return;
+
   const pixels = data.data;
 
   for (let i = 0; i < pixels.length; i += 4) {
     const r = pixels[i]
-    if (state.strip === 'black' && r < 1) pixels[i + 3] = 0
-    if (state.strip === 'white' && r > 254) pixels[i + 3] = 0
+
+    if (r > 128) {
+      if (state.strip === 'white') {
+        pixels[i + 3] = 0
+        continue;
+      } else if (state.white) {
+        pixels[i] = state.white[0]
+        pixels[i + 1] = state.white[1]
+        pixels[i + 2] = state.white[2]
+      }
+    } else {
+      if (state.strip === 'black') {
+        pixels[i + 3] = 0
+        continue;
+      } else if (state.black) {
+        pixels[i] = state.black[0]
+        pixels[i + 1] = state.black[1]
+        pixels[i + 2] = state.black[2]
+      }
+    }
   }
 
   return data;
@@ -89,6 +114,14 @@ file.addEventListener('change', (event) => {
   reader.readAsDataURL(file)
 })
 
+function channels(hex) {
+  const r = hex.substring(1, 3)
+  const g = hex.substring(3, 5)
+  const b = hex.substring(5, 7)
+
+  return [r, g, b].map(c => parseInt(c, 16))
+}
+
 async function downloadImage() {
   const dataUrl = canvas.toDataURL("image/png");
   const blob = await (await fetch(dataUrl)).blob();
@@ -106,11 +139,25 @@ async function downloadImage() {
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
   }, 0);
-
 }
 
 range.addEventListener('input', (event) => state.threshold = parseInt(event.target.value))
 select.addEventListener('input', (event) => state.algo = event.target.value)
 strip.addEventListener('input', (event) => state.strip = event.target.value)
+black.addEventListener('change', (event) => state.black = channels(event.target.value))
+white.addEventListener('change', (event) => state.white = channels(event.target.value))
+resetColor.addEventListener('click', () => {
+  black.value = "#000000"
+  white.value = "#FFFFFF"
+  state.black = null; state.white = null;
+})
 download.addEventListener('click', async () => { await downloadImage() })
+
+function loadDefault() {
+  const image = new Image();
+  image.onload = () => state.image = image
+  image.src = './amiga-dancounsell.png'
+}
+
 updateOptions();
+loadDefault();

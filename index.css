@@ -3,7 +3,7 @@
 }
 
 :root {
-  --accent: white;
+  --accent: #ffffffcc;
   --text: rgb(123, 109, 156);
   --background: rgb(33, 28, 45);
   --sidebar: rgba(44, 36, 62, 0.7);
@@ -36,7 +36,7 @@ body {
   background: radial-gradient(
     circle at center,
     transparent calc(var(--ring) - 0.5%),
-    rgba(255, 192, 203, 0.2) var(--ring),
+    rgba(255, 192, 203, 0.1) var(--ring),
     transparent calc(var(--ring) + 0.2%),
     transparent 100%
   );
@@ -44,7 +44,7 @@ body {
   animation: ping 4s forwards ease infinite;
 
   display: grid;
-  grid-template-columns: 3fr minmax(300px, 1fr);
+  grid-template-columns: minmax(0, 3fr) minmax(300px, 1fr);
   overflow: hidden;
   color: var(--text);
   font-family: sans-serif;
@@ -58,6 +58,16 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: overlay;
+}
+
+#wrap::-webkit-scrollbar,
+#wrap::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+#wrap::-webkit-scrollbar-thumb {
+  background: var(--text);
 }
 
 #options {
@@ -84,6 +94,12 @@ body {
     background: var(--accent);
     color: var(--text);
     border: none;
+  }
+
+  input[type="color"] {
+    padding: 0;
+    border: none;
+    height: 40px;
   }
 
   input[type="range"] {
@@ -121,5 +137,10 @@ body {
 .field-wrap {
   display: flex;
   flex-direction: column;
+  gap: 10px;
+}
+
+.halfsies {
+  display: flex;
   gap: 10px;
 }
