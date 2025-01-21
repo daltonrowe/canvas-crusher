@@ -12,17 +12,29 @@
     <div id="wrap">
       <canvas id="canvas"></canvas>
     </div>
-    <div id="options">
-      <input type="file" id="file" />
-      <select id="algo">
-        <option value="none">none</option>
-        <option value="grayscale">grayscale</option>
-        <option value="threshold">threshold</option>
-        <option value="floydsteinberg">floydsteinberg</option>
-        <option value="bayer" selected>bayer</option>
-        <option value="atkinson">atkinson</option>
-      </select>
-      <input type="range" id="range" min="0" max="255" step="1" />
+
+    <div id="options" class="field-wrap">
+      <div class="field-wrap">
+        <label for="file">Upload</label>
+        <input type="file" id="file" />
+      </div>
+
+      <div class="field-wrap">
+        <label for="algo">Algorithm</label>
+        <select id="algo">
+          <option value="none">none</option>
+          <option value="grayscale">grayscale</option>
+          <option value="threshold">threshold</option>
+          <option value="floydsteinberg">floydsteinberg</option>
+          <option value="bayer" selected>bayer</option>
+          <option value="atkinson">atkinson</option>
+        </select>
+      </div>
+
+      <div class="threshold field-wrap">
+        <label for="range">Threshold</label>
+        <input type="range" id="range" min="0" max="255" step="1" />
+      </div>
     </div>
   </body>
 </html>

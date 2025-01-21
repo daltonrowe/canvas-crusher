@@ -9,19 +9,20 @@ const canvas = document.querySelector('#canvas');
 /** @type {HTMLCanvasElement} */
 const offscreen = new OffscreenCanvas(0, 0);
 
+const options = document.querySelector('#options');
 const range = document.querySelector('#range');
 const select = document.querySelector('#algo');
+
+const hasThreshold = ['threshold', 'bayer']
 
 const target = { image: null, algo: 'bayer', threshold: 128 }
 
 const state = new Proxy(target, {
   async set(target, prop, receiver) {
-    if (prop === 'image') {
-      offscreen.width = receiver.width
-    }
 
     target[prop] = receiver
     requestAnimationFrame(render)
+    if (prop === 'algo') updateOptions();
   }
 });
 
@@ -51,6 +52,15 @@ function dither(canvas, image, algo, thres) {
   return data
 }
 
+function updateOptions() {
+  if (hasThreshold.includes(state.algo)) {
+    options.classList.add('show-threshold')
+  }
+  else {
+    options.classList.remove('show-threshold')
+  }
+}
+
 file.addEventListener('change', (event) => {
   const [file] = event.target.files
   const reader = new FileReader()
@@ -66,3 +76,4 @@ file.addEventListener('change', (event) => {
 
 range.addEventListener('input', (event) => state.threshold = parseInt(event.target.value))
 select.addEventListener('input', (event) => state.algo = event.target.value)
+updateOptions();

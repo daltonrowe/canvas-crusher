@@ -10,6 +10,10 @@ body {
   display: grid;
   grid-template-columns: 3fr 1fr;
   overflow: hidden;
+  color: white;
+  font-family: sans-serif;
+  text-transform: uppercase;
+  font-size: 11px;
 }
 
 #wrap {
@@ -25,12 +29,55 @@ body {
   width: 100%;
   background: #0f0810;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 
   input {
     width: 100%;
     appearance: none;
     border: none;
-    border: 1px solid #5a0064;
+    background: #5a0064;
     padding: 10px;
+    color: white;
   }
+
+  select {
+    width: 100%;
+    padding: 12px;
+    background: #5a0064;
+    color: white;
+    border: none;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+    background: #5a0064;
+    padding: 0;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: white;
+    height: 41px;
+    width: 1px;
+  }
+
+  .threshold {
+    display: none;
+  }
+
+  &.show-threshold .threshold {
+    display: flex;
+  }
+}
+
+.field-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
