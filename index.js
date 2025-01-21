@@ -11,11 +11,12 @@ const offscreen = new OffscreenCanvas(0, 0);
 const options = document.querySelector('#options');
 const range = document.querySelector('#range');
 const select = document.querySelector('#algo');
+const strip = document.querySelector('#strip');
 const download = document.querySelector('#download');
 
 const hasThreshold = ['threshold', 'bayer']
 
-const target = { image: null, algo: 'bayer', threshold: 128 }
+const target = { image: null, algo: 'bayer', threshold: 128, strip: 'none' }
 
 const state = new Proxy(target, {
   async set(target, prop, receiver) {
@@ -26,7 +27,7 @@ const state = new Proxy(target, {
   }
 });
 
-function draw(canvas, data) {
+function draw(data) {
   canvas.width = data.width;
   canvas.height = data.height;
 
@@ -36,7 +37,21 @@ function draw(canvas, data) {
 
 function render() {
   const dithered = dither(offscreen, state.image, state.algo, state.threshold)
-  draw(canvas, dithered)
+  const stripped = stripPixels(dithered);
+
+  draw(stripped)
+}
+
+function stripPixels(data) {
+  const pixels = data.data;
+
+  for (let i = 0; i < pixels.length; i += 4) {
+    const r = pixels[i]
+    if (state.strip === 'black' && r < 1) pixels[i + 3] = 0
+    if (state.strip === 'white' && r > 254) pixels[i + 3] = 0
+  }
+
+  return data;
 }
 
 function dither(canvas, image, algo, thres) {
@@ -96,5 +111,6 @@ async function downloadImage() {
 
 range.addEventListener('input', (event) => state.threshold = parseInt(event.target.value))
 select.addEventListener('input', (event) => state.algo = event.target.value)
+strip.addEventListener('input', (event) => state.strip = event.target.value)
 download.addEventListener('click', async () => { await downloadImage() })
 updateOptions();

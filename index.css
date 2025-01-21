@@ -3,17 +3,48 @@
 }
 
 :root {
-  --accent: rgb(255, 226, 173);
-  --text: #222;
+  --accent: white;
+  --text: rgb(123, 109, 156);
+  --background: rgb(33, 28, 45);
+  --sidebar: rgba(44, 36, 62, 0.7);
+}
+
+html {
+  background-color: var(--background);
+}
+
+@property --ring {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+@keyframes ping {
+  from {
+    --ring: 0%;
+  }
+  to {
+    --ring: 100%;
+  }
 }
 
 body {
   width: 100vw;
   height: 100vh;
   margin: 0;
-  background: rgb(248, 230, 207);
+
+  background: radial-gradient(
+    circle at center,
+    transparent calc(var(--ring) - 0.5%),
+    rgba(255, 192, 203, 0.2) var(--ring),
+    transparent calc(var(--ring) + 0.2%),
+    transparent 100%
+  );
+
+  animation: ping 4s forwards ease infinite;
+
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 3fr minmax(300px, 1fr);
   overflow: hidden;
   color: var(--text);
   font-family: sans-serif;
@@ -32,7 +63,7 @@ body {
 #options {
   height: 100%;
   width: 100%;
-  background: rgb(214, 193, 165);
+  background: var(--sidebar);
   padding: 20px;
   display: flex;
   flex-direction: column;
