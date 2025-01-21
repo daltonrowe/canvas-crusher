@@ -1,6 +1,5 @@
 import * as lib from "./lib.js";
 
-/** @type {HTMLImageElement} */
 const file = document.querySelector('#file');
 
 /** @type {HTMLCanvasElement} */
@@ -12,6 +11,7 @@ const offscreen = new OffscreenCanvas(0, 0);
 const options = document.querySelector('#options');
 const range = document.querySelector('#range');
 const select = document.querySelector('#algo');
+const download = document.querySelector('#download');
 
 const hasThreshold = ['threshold', 'bayer']
 
@@ -74,6 +74,27 @@ file.addEventListener('change', (event) => {
   reader.readAsDataURL(file)
 })
 
+async function downloadImage() {
+  const dataUrl = canvas.toDataURL("image/png");
+  const blob = await (await fetch(dataUrl)).blob();
+
+  const a = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+
+  a.href = url;
+  a.download = `${file.files[0].name}-dither.png`;
+  document.body.appendChild(a);
+
+  a.click();
+
+  setTimeout(function () {
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  }, 0);
+
+}
+
 range.addEventListener('input', (event) => state.threshold = parseInt(event.target.value))
 select.addEventListener('input', (event) => state.algo = event.target.value)
+download.addEventListener('click', async () => { await downloadImage() })
 updateOptions();
