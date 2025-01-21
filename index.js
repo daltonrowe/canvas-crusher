@@ -10,6 +10,7 @@ const offscreen = new OffscreenCanvas(0, 0);
 
 const options = document.querySelector('#options');
 const range = document.querySelector('#range');
+const contrastInput = document.querySelector('#contrast');
 const select = document.querySelector('#algo');
 const strip = document.querySelector('#strip');
 
@@ -21,7 +22,7 @@ const download = document.querySelector('#download');
 
 const hasThreshold = ['threshold', 'bayer']
 
-const target = { image: null, algo: 'bayer', threshold: 128, strip: 'none', white: null, black: null }
+const target = { contrast: 0.2, image: null, algo: 'bayer', threshold: 128, strip: 'none', white: null, black: null }
 
 const state = new Proxy(target, {
   async set(target, prop, receiver) {
@@ -41,10 +42,19 @@ function draw(data) {
 }
 
 function render() {
-  const dithered = dither(offscreen, state.image, state.algo, state.threshold)
-  const stripped = stripPixels(dithered);
+  offscreen.width = state.image.width;
+  offscreen.height = state.image.height
 
-  draw(stripped)
+  const context = offscreen.getContext('2d');
+  context.drawImage(state.image, 0, 0)
+
+  const data = context.getImageData(0, 0, state.image.width, state.image.height);
+
+  contrast(data)
+  dither(data)
+  stripPixels(data);
+
+  draw(data)
 }
 
 function stripPixels(data) {
@@ -79,17 +89,23 @@ function stripPixels(data) {
   return data;
 }
 
-function dither(canvas, image, algo, thres) {
-  canvas.width = image.width;
-  canvas.height = image.height
+function dither(data) {
+  if (lib[state.algo]) lib[state.algo](data, state.threshold)
+}
 
-  const context = canvas.getContext('2d');
-  context.drawImage(image, 0, 0)
+function contrast(data) {
+  if (!state.contrast) return
 
-  const data = context.getImageData(0, 0, canvas.width, canvas.height);
+  const pixels = data.data;
+  const clamp = (num) => {
+    return Math.max(0, Math.min(255, num))
+  }
 
-  if (lib[algo]) return lib[algo](data, thres)
-  return data
+  for (let i = 0; i < pixels.length; i += 4) {
+    pixels[i] = clamp(pixels[i] + (pixels[i] * state.contrast));
+    pixels[i + 1] = clamp(pixels[i + 1] + (pixels[i + 1] * state.contrast));
+    pixels[i + 2] = clamp(pixels[i + 2] + (pixels[i + 2] * state.contrast));
+  }
 }
 
 function updateOptions() {
@@ -142,6 +158,7 @@ async function downloadImage() {
 }
 
 range.addEventListener('input', (event) => state.threshold = parseInt(event.target.value))
+contrastInput.addEventListener('input', (event) => state.contrast = parseFloat(event.target.value))
 select.addEventListener('input', (event) => state.algo = event.target.value)
 strip.addEventListener('input', (event) => state.strip = event.target.value)
 black.addEventListener('change', (event) => state.black = channels(event.target.value))
@@ -156,7 +173,7 @@ download.addEventListener('click', async () => { await downloadImage() })
 function loadDefault() {
   const image = new Image();
   image.onload = () => state.image = image
-  image.src = './amiga-dancounsell.png'
+  image.src = './caleb-george.jpg'
 }
 
 updateOptions();
