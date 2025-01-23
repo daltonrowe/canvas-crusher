@@ -58,7 +58,8 @@ function render() {
 }
 
 function stripPixels(data) {
-  if (state.strip !== 'none' && (!state.white || !state.black)) return;
+  const skip = !(state.strip !== 'none' || state.white || state.black)
+  if (skip) return;
 
   const pixels = data.data;
 
