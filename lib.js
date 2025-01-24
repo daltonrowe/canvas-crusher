@@ -5,7 +5,6 @@
    * Change the image to grayscale
    *
    * @param  {ImageData}   image         The imageData of a Canvas 2d context
-   * @return {ImageData}                 The resulting imageData
    *
    */
 export function grayscale(image) {
@@ -13,8 +12,6 @@ export function grayscale(image) {
     const luminance = (image.data[i] * 0.299) + (image.data[i + 1] * 0.587) + (image.data[i + 2] * 0.114);
     image.data.fill(luminance, i, i + 3);
   }
-
-  return image;
 }
 
 /**
@@ -22,7 +19,6 @@ export function grayscale(image) {
    *
    * @param  {ImageData}   image         The imageData of a Canvas 2d context
    * @param  {number}   threshold     Threshold value (0-255)
-   * @return {ImageData}                 The resulting imageData
    *
    */
 export function threshold(image, threshold) {
@@ -32,8 +28,6 @@ export function threshold(image, threshold) {
     const value = luminance < threshold ? 0 : 255;
     image.data.fill(value, i, i + 3);
   }
-
-  return image;
 }
 
 /**
@@ -41,7 +35,6 @@ export function threshold(image, threshold) {
    *
    * @param  {ImageData}   image         The imageData of a Canvas 2d context
    * @param  {number}   threshold     Threshold value (0-255)
-   * @return {ImageData}                 The resulting imageData
    *
    */
 export function bayer(image, threshold) {
@@ -61,15 +54,12 @@ export function bayer(image, threshold) {
     const value = map < threshold ? 0 : 255;
     image.data.fill(value, i, i + 3);
   }
-
-  return image;
 }
 
 /**
    * Change the image to blank and white using the Floyd-Steinberg algorithm
    *
    * @param  {ImageData}   image         The imageData of a Canvas 2d context
-   * @return {ImageData}                 The resulting imageData
    *
    */
 export function floydsteinberg(image) {
@@ -90,15 +80,12 @@ export function floydsteinberg(image) {
     luminance[l + width] += error * 5;
     luminance[l + width + 1] += error * 1;
   }
-
-  return image;
 }
 
 /**
 * Change the image to blank and white using the Atkinson algorithm
 *
 * @param  {ImageData}   image         The imageData of a Canvas 2d context
-* @return {ImageData}                 The resulting imageData
 *
 */
 export function atkinson(image) {
@@ -121,6 +108,4 @@ export function atkinson(image) {
     luminance[l + width + 1] += error;
     luminance[l + 2 * width] += error;
   }
-
-  return image;
 }
