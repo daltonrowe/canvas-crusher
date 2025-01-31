@@ -149,7 +149,7 @@ body {
 }
 
 .end {
-  color: white;
+  margin-top: auto;
 
   a:visited {
     color: white;
