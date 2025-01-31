@@ -2,6 +2,8 @@
 
 Tool for applying dithering to images.
 
+Adapted from https://github.com/NielsLeenheer/CanvasDither/ (MIT)
+
 ### Ideas
 
 - Split, dither, and recombine by channel
