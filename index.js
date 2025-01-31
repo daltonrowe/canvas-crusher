@@ -22,7 +22,7 @@ const download = document.querySelector('#download');
 
 const hasThreshold = ['threshold', 'bayer']
 
-const target = { contrast: 0.2, image: null, algo: 'bayer', threshold: 128, strip: 'none', white: null, black: null }
+const target = { contrast: 0.2, image: null, algo: 'bayer', threshold: 128, strip: 'black', white: null, black: null }
 
 const state = new Proxy(target, {
   async set(target, prop, receiver) {
