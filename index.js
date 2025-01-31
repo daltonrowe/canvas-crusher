@@ -174,7 +174,7 @@ download.addEventListener('click', async () => { await downloadImage() })
 function loadDefault() {
   const image = new Image();
   image.onload = () => state.image = image
-  image.src = './caleb-morris.jpg'
+  image.src = './default.png'
 }
 
 updateOptions();

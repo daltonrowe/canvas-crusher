@@ -147,3 +147,11 @@ body {
   display: flex;
   gap: 10px;
 }
+
+.end {
+  color: white;
+
+  a:visited {
+    color: white;
+  }
+}

@@ -1,3 +1,3 @@
 # Canvas Crusher
 
-Default image by https://www.caleb-morris.com/
+Tool for applying dithering to images.
