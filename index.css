@@ -89,10 +89,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 20px;
-
-  @media (orientation: landscape) {
-    overflow-y: overlay;
-  }
+  overflow-y: overlay;
 
   input {
     width: 100%;
