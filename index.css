@@ -81,6 +81,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  overflow-y: overlay;
 
   input {
     width: 100%;
@@ -151,7 +152,14 @@ body {
 .end {
   margin-top: auto;
 
-  a:visited {
+  a:visited,
+  a:link {
     color: white;
+  }
+}
+
+@media (pointer: coarse) {
+  #options input[type="range"]::-webkit-slider-thumb {
+    width: 30px;
   }
 }
