@@ -72,12 +72,12 @@ body {
   }
 }
 
-#wrap::-webkit-scrollbar,
-#wrap::-webkit-scrollbar-corner {
+::-webkit-scrollbar,
+::-webkit-scrollbar-corner {
   background: transparent;
 }
 
-#wrap::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background: var(--text);
 }
 
