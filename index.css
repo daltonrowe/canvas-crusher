@@ -100,6 +100,7 @@ body {
     padding: 10px;
     color: var(--text);
     border-radius: 0;
+    touch-action: none;
   }
 
   select {
