@@ -22,7 +22,7 @@ const download = document.querySelector('#download');
 
 const hasThreshold = ['threshold', 'bayer']
 
-const target = { contrast: 0.2, image: null, algo: 'bayer', threshold: 128, strip: 'black', white: null, black: null }
+const target = { contrast: 0.2, image: null, algo: 'bayer', threshold: 128, strip: 'none', white: [112, 189, 205], black: [89, 18, 18] }
 
 const state = new Proxy(target, {
   async set(target, prop, receiver) {
@@ -30,7 +30,10 @@ const state = new Proxy(target, {
     target[prop] = receiver
     requestAnimationFrame(render)
     if (prop === 'algo') updateOptions();
+    console.log(target);
+
   }
+
 });
 
 function draw(data) {
@@ -147,7 +150,7 @@ async function downloadImage() {
   const url = URL.createObjectURL(blob);
 
   a.href = url;
-  a.download = `${file.files[0].name}-dither.png`;
+  a.download = `${file?.files[0]?.name || 'paris'}-dither.png`;
   document.body.appendChild(a);
 
   a.click();
