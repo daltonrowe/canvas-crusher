@@ -7,6 +7,7 @@
   --text: rgb(123, 109, 156);
   --background: rgb(33, 28, 45);
   --sidebar: rgba(44, 36, 62, 0.7);
+  --download: rgb(146, 99, 255);
 }
 
 html {
@@ -151,6 +152,11 @@ body {
     background: var(--accent);
     color: var(--text);
     height: 41px;
+  }
+
+  #download {
+    background-color: var(--download);
+    color: white;
   }
 }
 
