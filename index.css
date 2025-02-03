@@ -49,7 +49,7 @@ body {
   font-family: sans-serif;
   text-transform: uppercase;
   font-size: 11px;
-  overflow-x: hidden;
+  overflow: hidden;
 
   @media (orientation: landscape) {
     grid-template-columns: minmax(0, 3fr) minmax(300px, 1fr);
@@ -99,7 +99,6 @@ body {
     padding: 10px;
     color: var(--text);
     border-radius: 0;
-    touch-action: none;
   }
 
   select {
@@ -132,7 +131,7 @@ body {
     height: 41px;
     width: 1px;
 
-    @media (pointer: coarse) {
+    @media (orientation: portrait) {
       width: 30px;
     }
   }
