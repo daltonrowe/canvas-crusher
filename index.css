@@ -85,11 +85,16 @@ body {
   height: 100%;
   width: 100%;
   background: var(--sidebar);
-  padding: 20px;
+  padding: 30px;
   display: flex;
   flex-direction: column;
   gap: 20px;
   overflow-y: overlay;
+  touch-action: none;
+
+  @media (orientation: landscape) {
+    padding: 20px;
+  }
 
   input {
     width: 100%;
@@ -129,10 +134,10 @@ body {
     appearance: none;
     background-color: var(--text);
     height: 41px;
-    width: 1px;
+    width: 30px;
 
-    @media (orientation: portrait) {
-      width: 30px;
+    @media (orientation: landscape) {
+      width: 1px;
     }
   }
 
