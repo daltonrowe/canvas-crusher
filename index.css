@@ -170,6 +170,10 @@ body {
 .halfsies {
   display: flex;
   gap: 10px;
+
+  .field-wrap {
+    flex: 1 1 100%;
+  }
 }
 
 .end {

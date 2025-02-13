@@ -10,6 +10,8 @@ const offscreen = new OffscreenCanvas(0, 0);
 
 const options = document.querySelector("#options");
 const range = document.querySelector("#range");
+const inputScale = document.querySelector("#input-scale");
+const outputScale = document.querySelector("#output-scale");
 const contrastInput = document.querySelector("#contrast");
 const select = document.querySelector("#algo");
 const strip = document.querySelector("#strip");
@@ -31,6 +33,8 @@ const target = {
   strip: "none",
   white: [112, 189, 205],
   black: [89, 18, 18],
+  inputScale: 1,
+  outputScale: 1,
 };
 
 const state = new Proxy(target, {
@@ -42,26 +46,32 @@ const state = new Proxy(target, {
 });
 
 function draw(data) {
-  canvas.width = data.width;
-  canvas.height = data.height;
+  const w = data.width;
+  const h = data.height;
+
+  const w2 = w * state.outputScale
+  const h2 = h * state.outputScale
+
+  canvas.width = w2;
+  canvas.height = h2;
 
   const context = canvas.getContext("2d");
+  context.imageSmoothingEnabled = false;
   context.putImageData(data, 0, 0);
+  context.drawImage(canvas, 0, 0, w, h, 0, 0, w2, h2)
 }
 
 function render() {
-  offscreen.width = state.image.width;
-  offscreen.height = state.image.height;
+  const w = state.image.width * state.inputScale;
+  const h = state.image.height * state.inputScale;
+
+  offscreen.width = w;
+  offscreen.height = h;
 
   const context = offscreen.getContext("2d", { willReadFrequently: true });
-  context.drawImage(state.image, 0, 0);
+  context.drawImage(state.image, 0, 0, w, h);
 
-  const data = context.getImageData(
-    0,
-    0,
-    state.image.width,
-    state.image.height,
-  );
+  const data = context.getImageData(0, 0, w, h);
 
   contrast(data);
   dither(data);
@@ -176,6 +186,14 @@ async function downloadImage() {
 
 range.addEventListener("input", (event) => {
   state.threshold = Number.parseInt(event.target.value);
+});
+
+inputScale.addEventListener("input", (event) => {
+  state.inputScale = Number.parseFloat(event.target.value);
+});
+
+outputScale.addEventListener("input", (event) => {
+  state.outputScale = Number.parseInt(event.target.value);
 });
 
 contrastInput.addEventListener("input", (event) => {
