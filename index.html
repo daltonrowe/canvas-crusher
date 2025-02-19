@@ -176,6 +176,10 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+
+      &.error input {
+        outline: dashed red;
+      }
     }
 
     .halfsies {
@@ -565,8 +569,13 @@
       const next = Number.parseFloat(event.target.value);
       const valid = next <= 3 && next > 0
 
+      if (valid) {
+        inputScale.closest('.field-wrap').classList.remove('error')
+      } else {
+        inputScale.closest('.field-wrap').classList.add('error')
+      }
+
       state.inputScale = valid ? next : 1
-      if (!valid) inputScale.value = ''
     });
 
     outputScale.addEventListener("input", (event) => {
