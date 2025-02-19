@@ -8,7 +8,7 @@ Adapted from https://github.com/NielsLeenheer/CanvasDither/ (MIT)
 
 - Split, dither, and recombine by channel
 - Pre dither scaling, smoothing optional
-- Integer scale output
-- Pre scale and output scale setting for social
+- scale setting for social
 - Customize bayer thresholds
 - Mask, paint, and combine dithering algos
+- Apply gradients over bg / foreground
