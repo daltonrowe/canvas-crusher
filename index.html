@@ -432,10 +432,13 @@
       canvas.width = w2;
       canvas.height = h2;
 
+      const scaleCanvas = new OffscreenCanvas(w, h)
+      const scaleContext = scaleCanvas.getContext('2d')
+      scaleContext.putImageData(data, 0, 0);
+
       const context = canvas.getContext("2d");
       context.imageSmoothingEnabled = false;
-      context.putImageData(data, 0, 0);
-      context.drawImage(canvas, 0, 0, w, h, 0, 0, w2, h2)
+      context.drawImage(scaleCanvas, 0, 0, w, h, 0, 0, w2, h2)
     }
 
     function render() {
@@ -571,11 +574,10 @@
 
       if (valid) {
         inputScale.closest('.field-wrap').classList.remove('error')
+        state.inputScale = next
       } else {
         inputScale.closest('.field-wrap').classList.add('error')
       }
-
-      state.inputScale = valid ? next : 1
     });
 
     outputScale.addEventListener("input", (event) => {
